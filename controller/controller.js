@@ -42,12 +42,13 @@ const editUserDetails = async (req, res) => {
 }
 const updateUserDetails = async (req, res) => {
   try {
-    const userID = req.params.id
-    const user = await User.findByIdAndUpdate(userID, {
+    const id = req.params.id
+    const user = await User.findByIdAndUpdate(id, {
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
     })
+
     req.session.message = {
       type: 'success',
       message: 'User updated successfully',
