@@ -14,7 +14,7 @@ router.get('/', getUserDetails)
 router.get('/addUser', addUserDetails)
 router.post('/addUser', postUserDetails)
 router.get('/edit/:id', editUserDetails)
-router.post('/updateUser', updateUserDetails)
+router.post('/updateUser/:id', updateUserDetails)
 router.get('/delete/:id', deleteUserDetails)
 
 module.exports = router
