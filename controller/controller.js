@@ -1,10 +1,26 @@
-const User = require('../models/user')
+const { User, Credential } = require('../models/user')
 
+const loginPage = (req, res) => {
+  res.render('loginPage', { title: 'Login page' })
+}
+const credentialPage = async (req, res) => {
+  try {
+    const { email, password } = req.body
+    const userCredential = new Credential({ email, password })
+    await userCredential.save()
+    res.redirect('/home')
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+const homePage = (req, res) => {
+  res.render('home', { title: 'home page' })
+}
 const getUserDetails = async (req, res) => {
   try {
     const userDetails = await User.find({})
-    res.render('home', {
-      title: 'home page',
+    res.render('userDetails', {
+      title: 'user page',
       userDetails,
     })
   } catch (error) {
@@ -25,7 +41,7 @@ const postUserDetails = async (req, res) => {
       type: 'success',
       message: 'User added successfully',
     }
-    res.redirect('/')
+    res.redirect('/users')
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -34,7 +50,7 @@ const editUserDetails = async (req, res) => {
   try {
     const userID = req.params.id
     const user = await User.findById(userID)
-    if (!user) res.redirect('/')
+    if (!user) res.redirect('/users')
     res.render('editUser', { title: 'edit user', user })
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -53,7 +69,7 @@ const updateUserDetails = async (req, res) => {
       type: 'success',
       message: 'User updated successfully',
     }
-    res.redirect('/')
+    res.redirect('/users')
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -67,7 +83,7 @@ const deleteUserDetails = async (req, res) => {
         type: 'success',
         message: 'User deleted successfully',
       }
-      res.redirect('/')
+      res.redirect('/users')
     }
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -80,4 +96,7 @@ module.exports = {
   editUserDetails,
   updateUserDetails,
   deleteUserDetails,
+  homePage,
+  loginPage,
+  credentialPage,
 }

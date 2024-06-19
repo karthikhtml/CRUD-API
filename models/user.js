@@ -6,6 +6,12 @@ const userSchema = new mongoose.Schema({
   phone: { type: Number, required: true },
 })
 
-const User = mongoose.model('User', userSchema)
+const logInSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+})
 
-module.exports = User
+const User = mongoose.model('User', userSchema)
+const Credential = mongoose.model('Credential', logInSchema)
+
+module.exports = { User, Credential }
